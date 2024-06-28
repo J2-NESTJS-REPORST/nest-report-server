@@ -1,24 +1,25 @@
 services:
   db:
-    container_name: postgres_database
+    container_name: postgres_database_reports
     image: postgres:16.3
     volumes:
       - ./postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=123456
-    restart: always
+    #restart: always
     ports:
       - "5432:5432"
 
   pgAdmin:
     depends_on:
       - db
-    image: dpage/pgadmin4:8.6
+    container_name: pg_admin
+    image: dpage/pgadmin4:8.9
     volumes:
       - ./pgadmin:/var/lib/pgadmin
     ports:
       - "8080:80"
     environment:
       - PGADMIN_DEFAULT_PASSWORD=123456
-      - PGADMIN_DEFAULT_EMAIL=superman@google.com
-    restart: always
+      - PGADMIN_DEFAULT_EMAIL=juan@collantes.ec
+    #restart: always

@@ -8,3 +8,7 @@
 6. ejecutar el comando `npx prisma db pull` para traear el esquema a nest
 7. Generar el Prisma client `npx prisma generate`
 8. Ejecutar proyecto `npm run start:dev`
+9. Incluir linea en tsconfig.json:
+```
+"esModuleInterop": true
+```

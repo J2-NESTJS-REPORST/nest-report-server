@@ -57,7 +57,7 @@ export const getEmploymentLetterReport = (): TDocumentDefinitions => {
     // },
     header: headerSection({
       title: 'el titulo',
-      subtitle: 'subtitulo',
+      subTitle: 'subtitulo',
     }),
     content: [
       { text: `CONSTANCIA DE EMPLEO`, style: 'header' },

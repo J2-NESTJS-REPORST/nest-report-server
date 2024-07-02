@@ -7,6 +7,7 @@ import {
 import { PrismaClient } from '@prisma/client';
 import { PrinterService } from 'src/printer/printer.service';
 import {
+  getCountriesReport,
   getEmploymentLetterReport,
   getEmploymentLetterReportById,
   getHelloWorldReport,
@@ -61,6 +62,18 @@ export class BasicReportsService extends PrismaClient implements OnModuleInit {
     });
     const doc = await this.printerService.createPdf(docDefinition);
     return doc;
+    //return this.employees.findFirst();
+    //return this.employees.findMany();
+  }
+
+  async getCountryReport() {
+    const countries = await this.countries.findMany({
+      where: {
+        local_name: { not: null },
+      },
+    });
+    const docDefinition = getCountriesReport({ data: countries });
+    return await this.printerService.createPdf(docDefinition);
     //return this.employees.findFirst();
     //return this.employees.findMany();
   }

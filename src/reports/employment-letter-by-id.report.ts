@@ -84,7 +84,7 @@ export const getEmploymentLetterReportById = (
     // },
     header: headerSection({
       title: 'el titulo',
-      subtitle: 'subtitulo',
+      subTitle: 'subtitulo',
     }),
     content: [
       { text: `CONSTANCIA DE EMPLEO`, style: 'header' },

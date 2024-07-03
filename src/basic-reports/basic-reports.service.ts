@@ -4,7 +4,7 @@ import {
   NotFoundException,
   OnModuleInit,
 } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, continents } from '@prisma/client';
 import { PrinterService } from 'src/printer/printer.service';
 import {
   getCountriesReport,
@@ -15,6 +15,7 @@ import {
 
 @Injectable()
 export class BasicReportsService extends PrismaClient implements OnModuleInit {
+  //[x: string]: any;
   private readonly logger = new Logger('DB Services');
   async onModuleInit() {
     await this.$connect();
@@ -76,5 +77,26 @@ export class BasicReportsService extends PrismaClient implements OnModuleInit {
     return await this.printerService.createPdf(docDefinition);
     //return this.employees.findFirst();
     //return this.employees.findMany();
+  }
+
+  async getCountryReportByContinent(continent: string) {
+    try {
+      const countries = await this.countries.findMany({
+        where: {
+          local_name: { not: null },
+          //De ambas manera se puede hacer busqueda en el campo continent
+          continent: {
+            equals: continent as continents,
+          },
+          //continent: continent as continents,
+        },
+      });
+      const docDefinition = getCountriesReport({ data: countries });
+      return await this.printerService.createPdf(docDefinition);
+      //return this.employees.findFirst();
+      //return this.employees.findMany();
+    } catch (error) {
+      throw new NotFoundException(`Continent ${continent} does not exist`);
+    }
   }
 }

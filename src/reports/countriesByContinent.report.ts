@@ -7,7 +7,7 @@ interface ReportOptions {
   subTitle?: string;
   data: Country[];
 }
-export const getCountriesReport = (
+export const getCountriesReportByReport = (
   options: ReportOptions,
 ): TDocumentDefinitions => {
   const { title, subTitle, data } = options;
@@ -37,11 +37,9 @@ export const getCountriesReport = (
     // footer: (currentPage, pageCount, pageSize) => {
     //   return currentPage.toString() + ' of ' + pageCount;
     // },
-    // currentPage: number,
-    // pageCount: number,
 
-    //!A diferencia del header que ejecutamos la funcion headerSection con sus argumentos. footerSection es un callback internamente manejara los argumentos currentPage, pageCount, pageSize
-    footer: (currentPage, pageCount) => footerSection(currentPage, pageCount),
+    //!A diferencia del header que ejecutamos la funcion headerSection con sus argumentos, en el footer enviamos solo la referencia. footerSection internamente manejara los argumentos currentPage, pageCount, pageSize
+    footer: footerSection,
     pageMargins: [40, 110, 40, 60],
     content: [
       {

@@ -7,10 +7,12 @@ import {
 import { PrismaClient, continents } from '@prisma/client';
 import { PrinterService } from 'src/printer/printer.service';
 import {
+  getBasicChartSvgReport,
   getCountriesReport,
   getEmploymentLetterReport,
   getEmploymentLetterReportById,
   getHelloWorldReport,
+  getStatisticsReport,
 } from 'src/reports';
 
 @Injectable()
@@ -98,5 +100,33 @@ export class BasicReportsService extends PrismaClient implements OnModuleInit {
     } catch (error) {
       throw new NotFoundException(`Continent ${continent} does not exist`);
     }
+  }
+
+  async getSvgChart() {
+    const docDefinition = await getBasicChartSvgReport();
+    const doc = await this.printerService.createPdf(docDefinition);
+    return doc;
+  }
+
+  async getStatistics() {
+    //!Version SQL
+    // SELECT COUNTRY, COUNT(*) FROM CUSTOMERS GROUP BY COUNTRY ORDER BY COUNT(*) DESC LIMIT 10
+    //!Version PRISMA
+    const topCountries = await this.customers.groupBy({
+      by: ['country'],
+      orderBy: { _count: { country: 'desc' } },
+      _count: { country: true },
+      take: 10,
+    });
+    //console.log(topCountries);
+    //! Modificamos el resultado para configurar un nuevo array que tendra el formato especificado en la interfaz del metodo
+    const newArray = topCountries.map((count) => ({
+      customers: count._count.country,
+      country: count.country,
+    }));
+    //console.log(newArray);
+    const docDefinition = await getStatisticsReport({ topCountries: newArray });
+    const doc = await this.printerService.createPdf(docDefinition);
+    return doc;
   }
 }

@@ -45,7 +45,7 @@ export const headerSection = (options: HeaderOptions): Content => {
         alignment: 'center',
         margin: [0, 2, 0, 0],
         style: {
-          bold: true,
+          //bold: true,
           fontSize: 16,
         },
       }
